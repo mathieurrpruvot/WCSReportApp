@@ -1,0 +1,69 @@
+
+
+```{r,  echo=FALSE, include=FALSE}
+
+country<-unique(dataglobal$Country)[i]
+datacountry<-dataglobal[dataglobal$Country==country,]
+datacountrybyspec<-databyspecimen[databyspecimen$Country==country,]
+
+```
+
+## Summary `r country`
+
+In `r country`, `r length(unique(datacountry$Specimen.code))` animals were sampled, from `r length(unique(datacountry$specimen.latin.name))` species.
+ 
+These specimen are distributed between the different types of surveillance activities and species as follow:
+
+```{r, echo=FALSE, results='asis',message=FALSE,warning=FALSE}
+library(knitr)
+
+kable(cbind(table(as.character(datacountrybyspec$specimen.projects)),prop.table(table(as.character(datacountrybyspec$specimen.projects)))), caption="Specimen by project",col.names = c("Number of specimen","Proportion"))
+```
+ 
+ 
+```{r, echo=FALSE, results='asis',message=FALSE,warning=FALSE}
+library(knitr)
+
+
+kable(cbind(table(as.character(datacountrybyspec$specimen.common.name)),prop.table(table(as.character(datacountrybyspec$specimen.common.name)))), caption="Specimen by species",col.names = c("Number of specimen","Proportion"))
+
+
+```
+
+The distribution of cases across `r country` is illustrated on this map of recently submitted specimen:
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+#library(leaflet)
+##library(mapview)
+#library(png)
+#mymap<-datacambodia[,c("Latitude","Longitude")] %>%
+#  leaflet()%>%
+#  addTiles()%>%
+#  addCircleMarkers()
+#print(mymap)
+#mapshot(mymap,file="C:/Users/mpruvot/Documents/Work/WCS/DTRA/Reporting/Jan 2020/mymap.png")
+#img_path<-"C:/Users/mpruvot/Documents/Work/WCS/DTRA/Reporting/Jan 2020/mymap.png"
+#readPNG(img_path,native=T,info=T)
+
+library(ggmap)
+myMap <- get_map(location = c(left = round(min(datacountrybyspec$Longitude),0)-1,
+                                    bottom = round(min(datacountrybyspec$Latitude),0)-1,
+                                    right = round(max(datacountrybyspec$Longitude),0)+1,
+                                    top = round(max(datacountrybyspec$Latitude),0)+1),
+          maptype = "hybrid",
+          crop = FALSE,
+          zoom = 7)
+# plot map
+ggmap(myMap)+
+  geom_point(data=datacountrybyspec,aes(x=Longitude,y=Latitude, color="red",alpha=0.2),size=5, shape=19)+
+  guides(color = FALSE, alpha = FALSE, size = FALSE)
+```
+
+Total number of samples:
+```{r ,echo=FALSE}
+library(stringr)
+cat(nrow(datacountry))
+
+```
+
+

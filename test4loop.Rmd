@@ -1,0 +1,53 @@
+---
+title: "Report January 2020"
+output: word_document
+params: 
+  datain: NA
+  
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+
+dataglobal<-read.csv(file=input$datain$datapath)
+databyspecimen<-dataglobal %>% group_by(Specimen.code) %>% filter(row_number()==1) %>% as.data.frame()
+
+```
+
+# Summary across `r length(unique(dataglobal$Country))` countries
+
+Since the beginning of the surveillance efforts under the DTRA INDOPACOM Wildlife Biosurveillance project, `r length(unique(dataglobal$Specimen.code))` animals were sampled, from `r length(unique(dataglobal$specimen.latin.name))` species, in `r length(unique(dataglobal$Country))` countries.
+
+```{r echo=FALSE, results='asis',message=FALSE,warning=FALSE}
+library(plotrix)
+bycountry<-as.data.frame(table(databyspecimen$Country))
+bycountry$Var1<-as.character(bycountry$Var1)
+pie3D(bycountry$Freq,labels=bycountry$Var1,radius=1, col = c("#999999", "#E69F00", "#56B4E9"),explode=0.2,theta=pi/3,start = pi/5)
+```
+
+# Summary by country
+
+```{r  include=FALSE,echo=FALSE,message=FALSE,results="asis",warning=FALSE,eval=F}
+#out<-NULL
+#for (i in 1:length(unique(dataglobal$Country))){
+#  out<-c(out,knitr::knit_child('test4_countrygeneric.Rmd'))
+#}
+#
+
+```
+`r #paste(out, collapse='\n')`
+
+
+
+## Performance indicators
+
+```{r  include=FALSE,echo=FALSE,message=FALSE,results="asis",warning=FALSE,eval=F}
+#out2<-NULL
+#for (i in 1:length(unique(dataglobal$Country))){
+#  out2<-c(out2,knitr::knit_child('test4_perfindic_generic.Rmd'))
+#}
+#
+#
+```
+`r #paste(out2, collapse='\n')`
