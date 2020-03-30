@@ -28,26 +28,25 @@ pie3D(bycountry$Freq,labels=bycountry$Var1,radius=1, col = c("#999999", "#E69F00
 
 # Summary by country
 
-```{r  include=FALSE,echo=FALSE,message=FALSE,results="asis",warning=FALSE,eval=F}
-#out<-NULL
-#for (i in 1:length(unique(dataglobal$Country))){
-#  out<-c(out,knitr::knit_child('test4_countrygeneric.Rmd'))
-#}
-#
+```{r  include=FALSE,echo=FALSE,message=FALSE,results="asis",warning=FALSE}
+out<-NULL
+for (i in 1:length(unique(dataglobal$Country))){
+  out<-c(out,knitr::knit_child('test4_countrygeneric.Rmd'))
+}
 
 ```
-`r #paste(out, collapse='\n')`
+`r paste(out, collapse='\n')`
 
 
 
 ## Performance indicators
 
-```{r  include=FALSE,echo=FALSE,message=FALSE,results="asis",warning=FALSE,eval=F}
-#out2<-NULL
-#for (i in 1:length(unique(dataglobal$Country))){
-#  out2<-c(out2,knitr::knit_child('test4_perfindic_generic.Rmd'))
-#}
-#
-#
+```{r  include=FALSE,echo=FALSE,message=FALSE,results="asis",warning=FALSE}
+out2<-NULL
+for (i in 1:length(unique(dataglobal$Country))){
+  out2<-c(out2,knitr::knit_child('test4_perfindic_generic.Rmd'))
+}
+
+
 ```
-`r #paste(out2, collapse='\n')`
+`r paste(out2, collapse='\n')`
