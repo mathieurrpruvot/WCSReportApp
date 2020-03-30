@@ -3,13 +3,8 @@
 # 
 ##
 # TO DO:
-# Add WCS logo
 # Fix the pdf output 
-# Creat the main panel with
-#   -screenshot of what the report looks like
-#   -explanation of what the report does
-#   -file required to produce this report
-
+# Rename the Rmd test4loop to multicountry
 
 library(shiny)
 
@@ -18,7 +13,7 @@ img(src = "WCS.png",height=100),
 titlePanel(strong("Report Generator")),
 sidebarLayout(
     sidebarPanel(
-        radioButtons('rmdselect', 'Select report type', c('test4loop', 'Report2', 'Report3', 'Report4', 'Report5'), inline = F),
+        radioButtons('rmdselect', 'Select report type', choiceValues=c('test4loop', 'Report2', 'Report3', 'Report4', 'Report5'),choiceNames = c('Multi-country', 'Report 2', 'Report 3', 'Report 4', 'Report 5'), inline = F),
         fileInput("datain", "Upload data", buttonLabel = "Choose file..."),
         radioButtons('format', 'Select document format', c('PDF', 'HTML', 'Word'),inline = TRUE),
         downloadButton("report", "Generate report")
@@ -27,6 +22,16 @@ sidebarLayout(
        
         h2("Report description"),
         textOutput("report_descr"),
+        
+        h5("Example:"),
+        fluidRow(
+            column(4,imageOutput("img1")),
+            column(4,imageOutput("img2"))        
+            ),
+   #     fluidRow(
+   #         imageOutput("img1"),
+   #         imageOutput("img2")        
+   #     ),
         h2("Data requirements"),
         textOutput("data_req"),
         
@@ -36,7 +41,8 @@ sidebarLayout(
 
 
 server = function(input, output,session) {
-    
+
+#add explanations on each report    
            output$report_descr <- renderText({ 
                
                ifelse(input$rmdselect=='test4loop',
@@ -44,8 +50,32 @@ server = function(input, output,session) {
                    ifelse(input$rmdselect=='Report2',
                           "test some text for report 2",
                           ifelse(input$rmdselect=='Report3',
-                          "test some text for test4loop","No report selected")))
+                          "test some text for Report 3","No report selected")))
            })
+
+#add screenshot of reports    https://stackoverflow.com/questions/58942332/side-by-side-images-in-r-shiny       
+         
+          
+           
+          
+           output$img1<-renderImage({
+               pic1 <- normalizePath(file.path('./www',paste(switch(input$rmdselect, test4loop='multicountry1',Report2='Report2',Report3='Report3'), sep = '.',"png")))
+               list(src = pic1,
+                    height=300,
+                    contentType = 'image/png',
+                    alt = "Picture not available")
+           }, deleteFile = FALSE)
+           
+           output$img2<-renderImage({
+               pic2 <- normalizePath(file.path('./www',paste(switch(input$rmdselect, test4loop='multicountry2',Report2='Report2',Report3='Report3'), sep = '.',"png")))
+               list(src = pic2,
+                    height=300,
+                    contentType = 'image/png',
+                    alt = "Picture not available")
+           }, deleteFile = FALSE)
+           
+           
+           
            
            output$data_req <- renderText({ 
                
