@@ -13,7 +13,7 @@ img(src = "WCS.png",height=100),
 titlePanel(strong("Report Generator")),
 sidebarLayout(
     sidebarPanel(
-        radioButtons('rmdselect', 'Select report type', choiceValues=c('test4loop', 'Report2', 'Report3', 'Report4', 'Report5'),choiceNames = c('Multi-country', 'Report 2', 'Report 3', 'Report 4', 'Report 5'), inline = F),
+        radioButtons('rmdselect', 'Select report type', choiceValues=c('test4loop', 'aMapAndAChart', 'Report3', 'Report4', 'Report5'),choiceNames = c('Multi-country', 'Map and Chart for Newsletter', 'Report 3', 'Report 4', 'Report 5'), inline = F),
         fileInput("datain", "Upload data", buttonLabel = "Choose file..."),
         radioButtons('format', 'Select document format', c('PDF', 'HTML', 'Word'),inline = TRUE),
         downloadButton("report", "Generate report")
@@ -47,8 +47,8 @@ server = function(input, output,session) {
                
                ifelse(input$rmdselect=='test4loop',
                    "This report is designed to produce a comprehensive overview of surveillance across several countries. The report goes through a few global statistics, and then produces a country-by-country summary of sampling and surveillance performance indicators",
-                   ifelse(input$rmdselect=='Report2',
-                          "test some text for report 2",
+                   ifelse(input$rmdselect=='aMapAndAChart',
+                          "This tool produces a very brief report with two figures to include in a newsletter. It is recommended to select the Word output format to allow copy and pasting of the images into the draft newsletter.",
                           ifelse(input$rmdselect=='Report3',
                           "test some text for Report 3","No report selected")))
            })
@@ -59,7 +59,7 @@ server = function(input, output,session) {
            
           
            output$img1<-renderImage({
-               pic1 <- normalizePath(file.path('./www',paste(switch(input$rmdselect, test4loop='multicountry1',Report2='Report2',Report3='Report3'), sep = '.',"png")))
+               pic1 <- normalizePath(file.path('./www',paste(switch(input$rmdselect, test4loop='multicountry1',aMapAndAChart='achartandamap1',Report3='Report3'), sep = '.',"png")))
                list(src = pic1,
                     height=300,
                     contentType = 'image/png',
@@ -67,7 +67,7 @@ server = function(input, output,session) {
            }, deleteFile = FALSE)
            
            output$img2<-renderImage({
-               pic2 <- normalizePath(file.path('./www',paste(switch(input$rmdselect, test4loop='multicountry2',Report2='Report2',Report3='Report3'), sep = '.',"png")))
+               pic2 <- normalizePath(file.path('./www',paste(switch(input$rmdselect, test4loop='multicountry2',aMapAndAChart='achartandamap2',Report3='Report3'), sep = '.',"png")))
                list(src = pic2,
                     height=300,
                     contentType = 'image/png',
@@ -80,9 +80,9 @@ server = function(input, output,session) {
            output$data_req <- renderText({ 
                
                ifelse(input$rmdselect=='test4loop',
-                      "To generate this report, you will need a csv export of WHIP containing data from several countries.",
-                      ifelse(input$rmdselect=='Report2',
-                             "To generate report 2, you need to upload some data with these characteristics",
+                      "To generate this report, you will need a csv export of WHIP containing data from several countries. Make sure you clean up your data before attempting to generate this report",
+                      ifelse(input$rmdselect=='aMapAndAChart',
+                             "To generate these figures, you need to upload any csv data file that contains the coordinates of the specimen you want to map, and the 'Date Received' field. You should first make sure that your data is complete (includes all dates and locations), and that these were entered in the appropriate format. Warning: if the area to map is large, the map may take a long time to generate" ,
                              ifelse(input$rmdselect=='Report3',
                                     "To generate report 3, you need to upload some data with these characteristics","Not available")))
            })
@@ -90,12 +90,12 @@ server = function(input, output,session) {
            
            output$report <- downloadHandler(
             filename = function() {
-                paste(switch(input$rmdselect, test4loop='test4loop',Report2='Report2',Report3='Report3'), sep = '.', switch(
+                paste(switch(input$rmdselect, test4loop='test4loop',aMapAndAChart='amapandachart',Report3='Report3'), sep = '.', switch(
                     input$format, PDF = 'pdf', HTML = 'html', Word = 'docx'
                 ))
             },
             content = function(file) {
-                report<-paste(switch(input$rmdselect, test4loop='test4loop',Report2='Report2',Report3='Report3'), sep = '.',"Rmd")
+                report<-paste(switch(input$rmdselect, test4loop='test4loop',aMapAndAChart='aMapAndAChart',Report3='Report3'), sep = '.',"Rmd")
                 src <- normalizePath(report)
                 if (input$rmdselect=='test4loop'){
                     countryrmd <- normalizePath('test4_countrygeneric.Rmd')

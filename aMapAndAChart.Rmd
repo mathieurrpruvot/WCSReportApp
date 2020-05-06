@@ -1,0 +1,65 @@
+---
+title: "Newsletter map and chart"
+author: "Mathieu Pruvot"
+date: "5/6/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+
+```
+```{r,include=FALSE}
+library(ggmap)
+library(lubridate)
+library(dplyr)
+```
+
+```{r, include=FALSE}
+localdata<-read.csv(file=input$datain$datapath)
+localdata$date<-as.Date(localdata$Date.Received)
+```
+
+The geographical distribution of cases is illustrated by this map of recently submitted between `r month(min(localdata$date),label=T, abbr=F)` and `r month(max(localdata$date),label=T,abbr=F)`:
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+#library(leaflet)
+##library(mapview)
+#library(png)
+#mymap<-datacambodia[,c("Latitude","Longitude")] %>%
+#  leaflet()%>%
+#  addTiles()%>%
+#  addCircleMarkers()
+#print(mymap)
+#mapshot(mymap,file="C:/Users/mpruvot/Documents/Work/WCS/DTRA/Reporting/Jan 2020/mymap.png")
+#img_path<-"C:/Users/mpruvot/Documents/Work/WCS/DTRA/Reporting/Jan 2020/mymap.png"
+#readPNG(img_path,native=T,info=T)
+
+
+myMap <- get_map(location = c(left = round(min(localdata$Longitude),0)-1,
+                                    bottom = round(min(localdata$Latitude),0)-1,
+                                    right = round(max(localdata$Longitude),0)+1,
+                                    top = round(max(localdata$Latitude),0)+1),
+          maptype = "hybrid",
+          crop = FALSE,
+          zoom = 7)
+# plot map
+ggmap(myMap)+
+  geom_point(data=localdata,aes(x=Longitude,y=Latitude, color="red",alpha=0.2),size=5, shape=19)+
+  guides(color = FALSE, alpha = FALSE, size = FALSE)
+```
+
+Here is a bar chart of the number of unique specimen collected by two-week period on the reporting period.
+
+```{r, echo=FALSE}
+
+localdata %>% 
+    group_by(TwoWeekSPeriod = cut(date,"2 week")) %>% 
+    summarise(Specimen = length(unique(Specimen.code))) %>% 
+  ggplot(aes(TwoWeekSPeriod,Specimen)) +
+  geom_bar(stat = "identity")+
+  xlab("Two-week Period") +
+  ylab("Specimen Count")
+```
+
