@@ -18,7 +18,7 @@ library(dplyr)
 
 ```{r, include=FALSE}
 localdata<-read.csv(file=input$datain$datapath)
-localdata$date<-as.Date(localdata$Date.Received)
+localdata$date<-as.Date(localdata$Date.Received, format='%m/%d/%Y')
 ```
 
 The geographical distribution of cases is illustrated by this map of recently submitted between `r month(min(localdata$date),label=T, abbr=F)` and `r month(max(localdata$date),label=T,abbr=F)`:
