@@ -82,7 +82,7 @@ server = function(input, output,session) {
                ifelse(input$rmdselect=='test4loop',
                       "To generate this report, you will need a csv export of WHIP containing data from several countries. Make sure you clean up your data before attempting to generate this report",
                       ifelse(input$rmdselect=='aMapAndAChart',
-                             "To generate these figures, you need to upload any csv data file that contains the coordinates of the specimen you want to map, and the 'Date Received' field. You should first make sure that your data is complete (includes all dates and locations), and that these were entered in the appropriate format. Warning: if the area to map is large, the map may take a long time to generate" ,
+                             "To generate these figures, you need to upload any csv data file that contains the coordinates of the specimen you want to map, and the 'Date Found' field. You should first make sure that your data is complete (includes all dates and locations), and that these were entered in the appropriate format. In case your file has missing values for 'Date Found', the date will be automatically replaced by the event 'Start date'. Regardless, it is recommended to ensure you have no missing value in your data. Warning: if the area to map is large, the map may take a long time to generate" ,
                              ifelse(input$rmdselect=='Report3',
                                     "To generate report 3, you need to upload some data with these characteristics","Not available")))
            })
