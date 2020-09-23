@@ -11,14 +11,14 @@ datacountrybyspec<-databyspecimen[databyspecimen$Country==country,]
 
 Average time between date of death and date received:
 ```{r ,echo=FALSE, results='asis',message=FALSE,warning=FALSE}
-dateDeath<-as.character(datacountrybyspec$Date.of.Death)
-dateDeath[dateDeath==""]<-NA
-dateReceived<-as.character(datacountrybyspec$Date.Received)
-dateReceived[dateReceived==""]<-NA
-if(all(is.na(dateDeath))==F & all(is.na(dateReceived))==F){ timediff1<-as.Date(dateReceived)-as.Date(dateDeath)
-  print(mean(timediff1[timediff1>=0],na.rm=T))
-  hist(as.numeric(timediff1[timediff1>=0 & is.na(timediff1)==F]),breaks=10,main = "Distribution of time between 
-date of death and date received",xlab = "Days",)} else{cat("NA")}
+#dateDeath<-as.character(datacountrybyspec$Date.of.Death)
+#dateDeath[dateDeath==""]<-NA
+#dateReceived<-as.character(datacountrybyspec$Date.Received)
+#dateReceived[dateReceived==""]<-NA
+#if(all(is.na(dateDeath))==F & all(is.na(dateReceived))==F){ #timediff1<-as.Date(dateReceived)-as.Date(dateDeath)
+#  print(mean(timediff1[timediff1>=0],na.rm=T))
+#  hist(as.numeric(timediff1[timediff1>=0 & is.na(timediff1)==F]),breaks=10,main = "Distribution of #time between 
+#date of death and date received",xlab = "Days",)} else{cat("NA")}
 ```
 
 
