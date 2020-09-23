@@ -24,22 +24,22 @@ date of death and date received",xlab = "Days",)} else{cat("NA")}
 
 Average time between date of death and laboratory results received:
 ```{r ,echo=FALSE, results='asis',message=FALSE,warning=FALSE}
-datareceiveddate<-datacountry[,c("Date.Received")]
-datatestingdate<-datacountry[,c("newcastle.diseaseresult.received","avian.influenza.result.received","african.swine.fever.result.received","rickettsia.result.received")]
-  datatestingdate<-data.frame(lapply(datatestingdate, as.character), stringsAsFactors=FALSE)
-datatestingdate[datatestingdate==""]<-NA
-testingdelay<-apply(datatestingdate,2,function(x) as.Date(x)-as.Date(as.character(datareceiveddate)))
+#datareceiveddate<-datacountry[,c("Date.Received")]
+#datatestingdate<-datacountry[,c("newcastle.diseaseresult.received","avian.influenza.result.received","african.swine.fever.result.received","rickettsia.result.received")]
+#  datatestingdate<-data.frame(lapply(datatestingdate, as.character), stringsAsFactors=FALSE)
+#datatestingdate[datatestingdate==""]<-NA
+#testingdelay<-apply(datatestingdate,2,function(x) as.Date(x)-as.Date(as.character(datareceiveddate)))
 
-if(all(is.na(datatestingdate))==F  & all(is.na(datareceiveddate))==F){
-  mean(testingdelay[testingdelay>0],na.rm=T)} else{cat("NA")}
+#if(all(is.na(datatestingdate))==F  & all(is.na(datareceiveddate))==F){
+#  mean(testingdelay[testingdelay>0],na.rm=T)} else{cat("NA")}
 ```
 
 
 Percentage of specimen with any testing result:
 ```{r,echo=FALSE, results='asis',message=FALSE,warning=FALSE}
-datatesting<-datacountry[,c("Specimen.code","newcastle.diseasetested","avian.influenza.tested","african.swine.fever.tested","rickettsia.tested")]
-yesses<-function(x)(sum(x=="Yes",na.rm = T)>0)*1
-testspecimen<-datatesting %>% group_by(Specimen.code) %>% mutate_all(yesses) %>% as.data.frame()
-cat(paste(round(100*mean(rowSums(testspecimen[,-1])),2),"%"))
+#datatesting<-datacountry[,c("Specimen.code","newcastle.diseasetested","avian.influenza.tested","afr#ican.swine.fever.tested","rickettsia.tested")]
+#yesses<-function(x)(sum(x=="Yes",na.rm = T)>0)*1
+#testspecimen<-datatesting %>% group_by(Specimen.code) %>% mutate_all(yesses) %>% as.data.frame()
+#cat(paste(round(100*mean(rowSums(testspecimen[,-1])),2),"%"))
 
 ```

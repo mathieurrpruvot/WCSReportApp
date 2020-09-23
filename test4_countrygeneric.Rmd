@@ -54,6 +54,7 @@ myMap <- get_map(location = c(left = round(min(datacountrybyspec$Longitude),0)-1
           crop = FALSE,
           zoom = 7)
 # plot map
+
 ggmap(myMap)+
   geom_point(data=datacountrybyspec,aes(x=Longitude,y=Latitude, color="red",alpha=0.2),size=5, shape=19)+
   guides(color = FALSE, alpha = FALSE, size = FALSE)
