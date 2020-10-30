@@ -5,41 +5,43 @@ country<-unique(dataglobal$Country)[i]
 datacountry<-dataglobal[dataglobal$Country==country,]
 datacountrybyspec<-databyspecimen[databyspecimen$Country==country,]
 
-
 ```
 ### Performance `r country`
 
 Average time between date of death and date received:
 ```{r ,echo=FALSE, results='asis',message=FALSE,warning=FALSE}
-#dateDeath<-as.character(datacountrybyspec$Date.of.Death)
-#dateDeath[dateDeath==""]<-NA
-#dateReceived<-as.character(datacountrybyspec$Date.Received)
-#dateReceived[dateReceived==""]<-NA
-#if(all(is.na(dateDeath))==F & all(is.na(dateReceived))==F){ #timediff1<-as.Date(dateReceived)-as.Date(dateDeath)
-#  print(mean(timediff1[timediff1>=0],na.rm=T))
-#  hist(as.numeric(timediff1[timediff1>=0 & is.na(timediff1)==F]),breaks=10,main = "Distribution of #time between 
-#date of death and date received",xlab = "Days",)} else{cat("NA")}
+dateDeath<-as.character(datacountrybyspec$Date.of.Death)
+dateDeath[dateDeath==""]<-NA
+dateReceived<-as.character(datacountrybyspec$Date.Received)
+dateReceived[dateReceived==""]<-NA
+if(all(is.na(dateDeath))==F & all(is.na(dateReceived))==F){ timediff1<-as.Date(dateReceived)-as.Date(dateDeath)
+  print(mean(timediff1[timediff1>=0],na.rm=T))
+  hist(as.numeric(timediff1[timediff1>=0 & is.na(timediff1)==F]),breaks=10,main = "Distribution of time between date of death and date received",xlab = "Days",)} else{cat("NA")}
 ```
 
 
 Average time between date of death and laboratory results received:
 ```{r ,echo=FALSE, results='asis',message=FALSE,warning=FALSE}
-#datareceiveddate<-datacountry[,c("Date.Received")]
-#datatestingdate<-datacountry[,c("newcastle.diseaseresult.received","avian.influenza.result.received","african.swine.fever.result.received","rickettsia.result.received")]
-#  datatestingdate<-data.frame(lapply(datatestingdate, as.character), stringsAsFactors=FALSE)
-#datatestingdate[datatestingdate==""]<-NA
-#testingdelay<-apply(datatestingdate,2,function(x) as.Date(x)-as.Date(as.character(datareceiveddate)))
+datareceiveddate<-datacountry[,c("Date.Received")]
+datatestingdate<-datacountry[,c("african.swine.fever.test.results.received")]
+  datatestingdate<-data.frame(lapply(datatestingdate, as.character), stringsAsFactors=FALSE)
+datatestingdate[datatestingdate==""]<-NA
+testingdelay<-apply(datatestingdate,2,function(x) as.Date(x)-as.Date(as.character(datareceiveddate)))
 
-#if(all(is.na(datatestingdate))==F  & all(is.na(datareceiveddate))==F){
-#  mean(testingdelay[testingdelay>0],na.rm=T)} else{cat("NA")}
+if(all(is.na(datatestingdate))==F  & all(is.na(datareceiveddate))==F){
+  mean(testingdelay[testingdelay>0],na.rm=T)} else{cat("NA")}
 ```
 
 
 Percentage of specimen with any testing result:
-```{r,echo=FALSE, results='asis',message=FALSE,warning=FALSE}
-#datatesting<-datacountry[,c("Specimen.code","newcastle.diseasetested","avian.influenza.tested","afr#ican.swine.fever.tested","rickettsia.tested")]
-#yesses<-function(x)(sum(x=="Yes",na.rm = T)>0)*1
-#testspecimen<-datatesting %>% group_by(Specimen.code) %>% mutate_all(yesses) %>% as.data.frame()
-#cat(paste(round(100*mean(rowSums(testspecimen[,-1])),2),"%"))
+```{r,echo=FALSE, results='asis',message=FALSE,warning=FALSE, eval=FALSE}
+datatesting<-datacountry[,c("Specimen.code","african.swine.fever.test.status")]
+datatesting$Specimen.code <- as.character(datatesting$Specimen.code)
+datatesting$african.swine.fever.test.status <- as.character(datatesting$african.swine.fever.test.status)
+
+yesses<-function(x)((sum(is.na(x)==F,na.rm = T)>0)*1)
+testspecimen<-datatesting %>% group_by(Specimen.code) %>% summarize(tested=yesses(african.swine.fever.test.status))
+
+cat(paste(round(100*mean(rowSums(testspecimen[,-1])),2),"%"))
 
 ```
