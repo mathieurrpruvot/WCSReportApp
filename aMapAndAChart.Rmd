@@ -17,6 +17,7 @@ library(dplyr)
 ```
 
 ```{r, include=FALSE}
+
 localdata<-read.csv(file=input$datain$datapath)
 localdata$date<-as.Date(localdata$Date.Found, format='%Y-%m-%d')
 localdata$date[is.na(localdata$date)] <- as.Date(localdata$Start.date[is.na(localdata$date)], format='%Y-%m-%d')
