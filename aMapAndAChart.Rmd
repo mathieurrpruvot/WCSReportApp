@@ -61,6 +61,7 @@ localdata %>%
   ggplot(aes(TwoWeekSPeriod,Specimen)) +
   geom_bar(stat = "identity")+
   xlab("Two-week Period") +
-  ylab("Specimen Count")
+  ylab("Specimen Count")+
+  theme(axis.text.x = element_text(angle = 90))
 ```
 
